@@ -50,7 +50,7 @@ The project is focused on the straight channel in the cartridge. The camera is l
 
 Before Correction| After Correction
 ------------ | -------------
-<img src=".\Pictures\Image_without_anything.jpg" alt="Close" width="200"/>| <img src=".\Pictures\Image_Correction.jpg" alt="drawing" width="200"/>
+<img src="./Pictures/Image_without_anything.jpg" alt="Close" width="200"/>| <img src="./Pictures/Image_Correction.jpg" alt="drawing" width="200"/>
 
 
 
@@ -58,7 +58,7 @@ The light intensity reflected on the Channel to the Camera was not unified as sh
 
 Before filters | After filters
 ------------ | -------------
-<img src=".\Pictures\Image_Correction.jpg" alt="drawing" width="200"/> | <img src=".\Pictures\Image_Histogram.jpg" alt="drawing" width="200"/>
+<img src="./Pictures/Image_Correction.jpg" alt="drawing" width="200"/> | <img src="./Pictures/Image_Histogram.jpg" alt="drawing" width="200"/>
 
 
 ## Algorithm:
@@ -73,7 +73,7 @@ The algorithm leverages this to detect whether the channel contains liquids.
 The first objective was to detect straight lines in the cartridge to detect the location of the channel. The technique that was used is [Hough Line Transform](https://docs.openmv.io/library/omv.image.html).
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 45vh;">
-        <img src=".\Pictures\Img_Lines.jpg" alt="Lines" width="200">
+        <img src="./Pictures/Img_Lines.jpg" alt="Lines" width="200">
         <figcaption>Detected lines</figcaption>
     </figure>
 In the previous, only two straight lines were detected ( the edges ).
@@ -82,14 +82,14 @@ In the previous, only two straight lines were detected ( the edges ).
 Subsequently, from the data, calculate the maximum horizontal and vertical as well as minimum of pixels of the detected lines (assuming that the lines detected the channel), which are the corner positions of the channel leading to form a bounding box around the channel.
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 45vh;">
-        <img src=".\Pictures\Image_Box.jpg" alt="Bounding Box" width="200">
+        <img src="./Pictures/Image_Box.jpg" alt="Bounding Box" width="200">
         <figcaption>Bounding box </figcaption>
     </figure>
 
 The same will be applied to a "reference segment" which is out of the channel, the cartridge background. This will act as our refrence threshold to detect whether the channel is full or empty depending on the gradient level. The cartridge background is grey and falls around 125 units depending on the light intensity of the environment.
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 45vh;">
-        <img src=".\Pictures\Image_reference.jpg" alt="Sample Image" width="200">
+        <img src="./Pictures/Image_reference.jpg" alt="Sample Image" width="200">
         <figcaption>Reference Rectangle </figcaption>
     </figure>
 
@@ -97,7 +97,7 @@ The same will be applied to a "reference segment" which is out of the channel, t
 Now, as the channel is detected, it is split into segments along the frame's height. For each segment of the channel, the mean value of its grayscale intensity will be extracted and stored in an array. The following figure shows the segments lines of the channel.
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 45vh;">
-        <img src=".\Pictures\Image_segments.jpg" alt="Sample Image" width="200">
+        <img src="./Pictures/Image_segments.jpg" alt="Sample Image" width="200">
         <figcaption>Segment Lines in the channel </figcaption>
     </figure>
 
@@ -120,7 +120,7 @@ As shown in the previous figure, it could be observed that there is a gap when t
 In the Empty_ratio values, the reason why the value is higher in the upper segments in comparison to lower segments is because of the placement of the light source (The LED panel). The following picture shows why it illuminates the top region of the channel more than it does to the bottom region of the channel.
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
-        <img src=".\Pictures\LED.png" alt="Sample Image" width="200" >
+        <img src="./Pictures/LED.png" alt="Sample Image" width="200" >
         <figcaption>LED Panel</figcaption>
     </figure>
 
@@ -133,7 +133,7 @@ Below are examples of pictures captured from the a video feed.
 
 Empty | Full| Hybrid 1| Hybrid 2
 ------------ | -------------| -------------| -------------
-<img src=".\Pictures\Final_Empty.jpg" alt="Empty" width="200"/> | <img src=".\Pictures\Final_Full.jpg" alt="Full" width="200"/>| <img src=".\Pictures\Final_Hybrid.jpg" alt="Hybrid 1" width="200"/>| <img src=".\Pictures\Final_Hybrid2.jpg" alt="Hybrid 2" width="200"/>
+<img src="./Pictures/Final_Empty.jpg" alt="Empty" width="200"/> | <img src="./Pictures/Final_Full.jpg" alt="Full" width="200"/>| <img src="./Pictures/Final_Hybrid.jpg" alt="Hybrid 1" width="200"/>| <img src="./Pictures/Final_Hybrid2.jpg" alt="Hybrid 2" width="200"/>
 
 
 The push button's functionality is resetting the appliciton,that it in case of any drastic changes.
