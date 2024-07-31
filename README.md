@@ -110,7 +110,7 @@ By dividing the array by the reference rectangle, we normalize the segment value
 The following is the observation on the values when it is empty as well as full:
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 55vh;">
-        <img src=".\Pictures\Image_Diff.png" alt="Excel Analysius" width="700" >
+        <img src="./Pictures/Image_Diff.png" alt="Excel Analysius" width="700" >
         <figcaption>Analysis (Empty vs Full) channels </figcaption>
     </figure>
 
