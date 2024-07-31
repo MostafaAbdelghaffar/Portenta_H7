@@ -46,6 +46,20 @@ Close view| Top view| Side view
 ------------ | -------------| -------------
 <img src="./Pictures/Close.jpeg" alt="Close" width="300"/>| <img src="./Pictures/Top.jpeg" alt="drawing" width="335"/>| <img src="./Pictures/Side_2.jpeg" alt="drawing" width="600"/>
 
+Lastly, a black box was used to prevent interference from external light sources, ensuring accurate results in the light-sensitive application. The images below show the results with the box open and closed over the setup.
+
+Setup Uncovered| Setup Covered 
+------------ | -------------
+<img src="./Pictures/Black_Box_1.jpg" alt="Close" width="300"/>| <img src="./Pictures/Black_Box_2.jpg" alt="drawing" width="300"/>|
+
+This following images clarifies the purpose of the black box and emphasizes the difference in results when the box is used versus when it's not.
+
+Setup Uncovered| Setup Covered 
+------------ | -------------
+<img src="./Pictures/Image_No_Box.png" alt="Close" width="300"/>| <img src="./Pictures/Image_Box.png" alt="drawing" width="300"/>|
+
+As shown in the previous picture, it's noticeable that when the setup is uncovered, reflections affect the resulting image
+
 
 Constraints: 
 
