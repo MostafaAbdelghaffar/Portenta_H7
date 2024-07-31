@@ -14,11 +14,11 @@ Date: "25/07/2024"
 
 ## Introduction:
 
-The project, named Janus, is designed for medical applications, indicating that the cartridge contains microchannels through which various liquids, including different enzymes.
+The project, Janus, is designed for detecting the presence of liquid in a medical application. In this setup, a cartridge contains microchannels through which various liquids, including different enzymes, flow. 
 
-The project is inspired by the utilization of image processing and computer vision technologies to detect the presence of liquid inside a micro-sized channel in a cartridge.
+The project is inspired by the use of image processing and computer vision technologies to detect the presence of liquid inside a micro-sized channel in a cartridge.
 
-The algorithm relies entirely on the [grayscale intensity level](https://i.stack.imgur.com/fdbAz.png) of each pixel in the captured frame from the camera, thus depending on the light and its intensity.
+The algorithm relies entirely on the [grayscale intensity levels](https://i.stack.imgur.com/fdbAz.png) of each pixel in the captured frame from the camera, thus depending on the light and its intensity.
 
 
 ## Hardware:
@@ -35,18 +35,21 @@ The algorithm relies entirely on the [grayscale intensity level](https://i.stack
 - [OpenMV IDE](https://openmv.io/pages/download) using [MicroPython](https://micropython.org/)
 
 ## Setup:
-The following images are self-explanatory regarding how the hardware was set up.
+The following images are self-explanatory and show how the hardware was set up.
+
+<figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 60vh;">
+        <img src="./Pictures/Annotated.png" alt="Lines" width="500">
+        <figcaption>Setup</figcaption>
+    </figure>
 
 Close view| Top view| Side view
 ------------ | -------------| -------------
 <img src="./Pictures/Close.jpeg" alt="Close" width="300"/>| <img src="./Pictures/Top.jpeg" alt="drawing" width="335"/>| <img src="./Pictures/Side_2.jpeg" alt="drawing" width="600"/>
 
 
-
-
 Constraints: 
 
-The project is focused on the straight channel in the cartridge. The camera is limited to capture the channel in a straight and vertical orientation, and the lens should be aligned so the channel appears straight and vertical almost completely. In addition, virtual lens correction was added in the code in order to achieve that, as shown in the following.
+The project focuses on the straight channel in the cartridge. The camera is limited to capture the channel in a straight and vertical orientation, and the lens should be aligned so the channel appears straight and vertical almost completely. Additionally, virtual lens correction was applied in the code to achieve this, as shown below.
 
 Before Correction| After Correction
 ------------ | -------------
@@ -54,7 +57,7 @@ Before Correction| After Correction
 
 
 
-The light intensity reflected on the Channel to the Camera was not unified as shown in the previous figure, so lighting equalization was needed through historgram equalization as follow with a sharpening filter to show the edges of the cartridge.
+The light intensity reflected from the channel to the camera was not uniform, as shown in the previous figure. Therefore, lighting equalization was needed, using histogram equalization followed by a sharpening filter to highlight the edges of the cartridge.
 
 Before filters | After filters
 ------------ | -------------
@@ -63,9 +66,9 @@ Before filters | After filters
 
 ## Algorithm:
 
-Initially, the liquid detection via the grayscale intensity is based on the greyscale intensity level, ranging from 0 to 255, where 0 is black and 255 is white.
+Initially, liquid detection is based on the grayscale intensity level, which ranges from 0 to 255, where 0 is black and 255 is white
 
-After observing, when the channel is empty, the edges as well as the middle of channel are high value in the grayscale intensity level (white). Conversely, when it is full, it is significantly low value/darker (black).
+When the channel is empty, the edges and the middle of the channel have high values in the grayscale intensity level (white). Conversely, when the channel is full, the grayscale intensity level is significantly lower (darker).
 
 The algorithm leverages this to detect whether the channel contains liquids.
 
@@ -78,23 +81,23 @@ The first objective was to detect straight lines in the cartridge to detect the 
     </figure>
 In the previous, only two straight lines were detected ( the edges ).
 
+Subsequently, the maximum and minimum pixel values of the detected lines are calculated from the data, assuming that these lines represent the channel edges. These values define the corner positions of the channel, forming a bounding box around it.
 
-Subsequently, from the data, calculate the maximum horizontal and vertical as well as minimum of pixels of the detected lines (assuming that the lines detected the channel), which are the corner positions of the channel leading to form a bounding box around the channel.
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 45vh;">
         <img src="./Pictures/Image_Box.jpg" alt="Bounding Box" width="200">
         <figcaption>Bounding box </figcaption>
     </figure>
 
-The same will be applied to a "reference segment" which is out of the channel, the cartridge background. This will act as our refrence threshold to detect whether the channel is full or empty depending on the gradient level. The cartridge background is grey and falls around 125 units depending on the light intensity of the environment.
+The same approach is applied to a 'reference segment' outside the channel, on the cartridge background. This segment will serve as our reference threshold to determine whether the channel is full or empty based on the gradient level. The cartridge background is gray and typically measures around 125 units depending on the ambient light intensity.
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 45vh;">
         <img src="./Pictures/Image_reference.jpg" alt="Sample Image" width="200">
         <figcaption>Reference Rectangle </figcaption>
     </figure>
 
-
-Now, as the channel is detected, it is split into segments along the frame's height. For each segment of the channel, the mean value of its grayscale intensity will be extracted and stored in an array. The following figure shows the segments lines of the channel.
+Once the channel is detected, it is divided into segments along the frame's height. For each segment, the mean grayscale intensity is calculated and stored in an array
+The following figure shows the segment lines of the channel.
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 45vh;">
         <img src="./Pictures/Image_segments.jpg" alt="Sample Image" width="200">
@@ -105,19 +108,20 @@ Now, as the channel is detected, it is split into segments along the frame's hei
 
 Now, we have an array of the mean values of each segment in the channel as well as the mean value of the reference rectangle that we created.
 
-By dividing the array by the reference rectangle, we normalize the segment values based on the reference rectangle, then store them in an array.
+The segment values are normalized by dividing them by the reference rectangle's values, and the results are stored in an array
 
-The following is the observation on the values when it is empty as well as full:
+The following observations show the values when the channel is empty compared to when it is full.
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 55vh;">
         <img src="./Pictures/Image_Diff.png" alt="Excel Analysius" width="700" >
-        <figcaption>Analysis (Empty vs Full) channels </figcaption>
+        <figcaption>Analysis (Empty vs Full) channel </figcaption>
     </figure>
 
 
-As shown in the previous figure, it could be observed that there is a gap when the channel is empty compared to when it is full.
+As shown in the previous figure, there is a noticeable difference in the grayscale values when the channel is empty compared to when it is full. In the Empty ratio values, the reason the values are higher in the upper segments compared to lower segments is due to the placement of the light source (The LED panel). 
 
-In the Empty_ratio values, the reason why the value is higher in the upper segments in comparison to lower segments is because of the placement of the light source (The LED panel). The following picture shows why it illuminates the top region of the channel more than it does to the bottom region of the channel.
+The following picture shows why the LED panel illuminates the top region of the channel more than the bottom region.
+
 
 <figure style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
         <img src="./Pictures/LED.png" alt="Sample Image" width="200" >
@@ -126,14 +130,13 @@ In the Empty_ratio values, the reason why the value is higher in the upper segme
 
 Based on this observation and the data shown in the previous graph, a manual threshold value around 1.0 was set for the liquid detection.
 
+The final comparison determines the presence of liquid based on the previous observations, checking whether the normalized segment values are above or below 1.3
 
-The last comparison is made to detect the liquid based on the previous. To see whether the normalized segment value is above 1.3 or below.
-
-Below are examples of pictures captured from the a video feed.
+Below are examples of images captured from the video feed."
 
 Empty | Full| Hybrid 1| Hybrid 2
 ------------ | -------------| -------------| -------------
 <img src="./Pictures/Final_Empty.jpg" alt="Empty" width="200"/> | <img src="./Pictures/Final_Full.jpg" alt="Full" width="200"/>| <img src="./Pictures/Final_Hybrid.jpg" alt="Hybrid 1" width="200"/>| <img src="./Pictures/Final_Hybrid2.jpg" alt="Hybrid 2" width="200"/>
 
 
-The push button's functionality is resetting the appliciton,that it in case of any drastic changes.
+The push button's functionality is to reset the application in case of any drastic changes.
